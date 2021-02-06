@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper  namespace="com.upcome.Student.Mapper.StudentMapper">
+
+    <!--在mapper文件中引入缓存策略-->
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
+    <!--1. 结果集合映射器-->
+    <resultMap id="StudentList" type="com.upcome.Student.entity.Student">
+       <id column="Stu_Id" property="Stu_Id" jdbcType="BIGINT"></id>            <!-- 1. 用于表示哪个列是主键-->
+       <result column="Stu_Name" property="Stu_Name" jdbcType="VARCHAR" />
+       <result column="Stu_Sex"  property="Stu_Sex"  jdbcType="VARCHAR" />
+       <result column="Stu_Age"  property="Stu_Age"  jdbcType="VARCHAR" />
+
+        <association property="classes" javaType="com.upcome.Classes.entity.Classes">
+            <id property="clas_Id" javaType="int" column="clas_Id" jdbcType="BIGINT"></id>
+            <result property="clas_Name" javaType="String" column="clas_Name" jdbcType="VARCHAR" />
+        </association>
+
+    </resultMap>
+
+    <!--2. 查询全部学生信息-->
+    <select id="selectAllStudent" resultMap="StudentList">
+        select  * from student  s left join class c on s.clas_Id=c.clas_Id
+    </select>
+
+    <!--3. 根据Id删除学生-->
+    <delete id="deleteStudentById" parameterType="com.upcome.Student.entity.Student">
+        delete from student where Stu_Id=#{stu.Stu_Id}
+    </delete>
+
+    <!--4. 添加学生-->
+    <insert id="AddStudent" parameterType="com.upcome.Student.entity.Student">
+        insert into student(Stu_Id,clas_Id,Stu_Name,Stu_Sex,Stu_Age) value (0,#{stu.classes.clas_Id},#{stu.Stu_Name},#{stu.Stu_Sex},#{stu.Stu_Age})
+    </insert>
+
+    <!--5. 根据id查询 学生信息-->
+    <select id="SeleStudentById" parameterType="com.upcome.Student.entity.Student" resultType="com.upcome.Student.entity.Student">
+        select * from student where Stu_Id=#{stu.Stu_Id}
+    </select>
+
+    <!--6. 根据Id修改 学生信息-->
+    <update id="UpdateStuSub" parameterType="com.upcome.Student.entity.Student" >
+        update student set clas_Id=#{stu.classes.clas_Id},Stu_Name=#{stu.Stu_Name},Stu_Sex=#{stu.Stu_Sex},Stu_Age=#{stu.Stu_Age} where Stu_Id=#{stu.Stu_Id}
+    </update>
+
+
+</mapper>

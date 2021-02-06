@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="com.upcome.Classes.Mapper.ClassesMapper">
+
+
+    <resultMap id="SelectClasses" type="com.upcome.Classes.entity.Classes">
+        <id property="clas_Id" javaType="int" column="clas_Id" jdbcType="BIGINT" />
+        <result property="clas_Name" javaType="String" column="clas_Name" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="SelectAllClasses" resultMap="SelectClasses">
+        select * from class
+    </select>
+
+</mapper>

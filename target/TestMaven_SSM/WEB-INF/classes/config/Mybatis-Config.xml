@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- mybatis 映射配置约束 -->
+<configuration>
+
+
+<!--    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>-->
+
+    <!--映射文件-->
+    <mappers>
+        <mapper resource="com/upcome/Student/Mapper/StudentMapper.xml"></mapper>
+    </mappers>
+
+</configuration>

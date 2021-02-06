@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+
+    <!--1. 配置数据源  -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/schoolmanager?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true" />
+        <property name="username" value="root" />
+        <property name="password" value="abcdef" />
+    </bean>
+
+
+    <!--2. 创建Mybatis sqlSession工厂-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--（1） 注入参数 ：dataSource数据源-->
+        <property name="dataSource"  ref="dataSource" ></property>
+        <!--（2） 注入Mybatis 配置文件位置：用于读取xml映射器与Mybatis的设置-->
+        <property name="configLocation" value="classpath:config/Mybatis-Config.xml"></property>
+    </bean>
+
+
+    <!--3. 将DefaltSqlSession替换为SqlSessionTemplate-->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <!--(1) 使用构造方法注入 DefaltSqlSession-->
+       <constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+    </bean>
+
+
+    <!--4. 将sqlSession 通过动态代理分发给各个Mapper接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--(1) 设置范围-->
+        <property name="basePackage" value="com.upcome.*.Mapper"></property>
+        <!--(2) 设置属性-->
+        <property name="sqlSessionTemplate" ref="sqlSession"></property>
+    </bean>
+
+
+    <!--5. 创建事物管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+    <!--6. 创建事物注解驱动 -->
+    <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
+
+
+    <!--7. 扫描service层 与Mapper层注解 使事物注解好使 -->
+    <context:component-scan base-package="com.upcome.*.service" />
+    <context:component-scan base-package="com.upcome.*.Mapper" />
+
+
+</beans>
