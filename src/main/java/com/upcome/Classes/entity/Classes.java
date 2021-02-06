@@ -4,6 +4,7 @@ package com.upcome.Classes.entity;
  * user: 张文龙
  * desc: 班级模块实体类
  * Time: 2021-02-02 17:05
+ * 测试一手
  */
 public class Classes {
 
