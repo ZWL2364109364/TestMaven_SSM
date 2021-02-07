@@ -7,6 +7,8 @@ package com.upcome.Classes.controller;
  */
 public class ClassesController {
 
+    public static void main(String[] args) {
 
+    }
 
 }
