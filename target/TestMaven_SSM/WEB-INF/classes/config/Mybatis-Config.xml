@@ -5,9 +5,9 @@
 <configuration>
 
 
-<!--    <settings>
+    <settings>
         <setting name="logImpl" value="LOG4J"/>
-    </settings>-->
+    </settings>
 
     <!--映射文件-->
     <mappers>
